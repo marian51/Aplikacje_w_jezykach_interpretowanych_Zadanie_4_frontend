@@ -1,23 +1,20 @@
 # zadanie-sklep-frontend
 
-## Project setup
+## Instalacja projektu
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Ewentualne doinstalowanie pakietów
+```
+npm install axios --save
+npm install vue-router --save
+```
+## Konieczne jest uruchomienie dopiero po uruchomieniu serwera!
+
+### Uruchomienie
 ```
 npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
 ```
 
 ### Customize configuration
