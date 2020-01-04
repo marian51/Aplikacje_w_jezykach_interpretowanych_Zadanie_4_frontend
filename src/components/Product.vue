@@ -90,6 +90,7 @@ export default {
                 .then(response => {
                     this.currentProduct.available = response.data.available;
                     console.log(response.data);
+                    window.location.reload(false);
                 })
                 .catch(error => {
                     console.log(error);
@@ -111,7 +112,7 @@ export default {
             ProductDataService.delete(this.currentProduct.id)
                 .then(response => {
                     console.log(response.data);
-                    this.$router.push({ name: "products "});
+                    this.$router.push('/products');
                 })
                 .catch(error => {
                     console.log(error);
