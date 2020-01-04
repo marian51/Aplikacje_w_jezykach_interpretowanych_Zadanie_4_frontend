@@ -52,3 +52,76 @@
         <p>Wybierz produkt</p>
     </div>   
 </template>
+
+<script>
+/* eslint-disable no-console */
+import ProductDataService from "../services/ProductDataService";
+
+export default {
+    name: "product",
+    data() {
+        return {
+            currentProduct: null,
+            message: ""
+        };
+    },
+
+    methods: {
+        getProduct(id) {
+            ProductDataService.get(id)
+                .then(response => {
+                    this.currentProduct = response.data;
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        updateAvailable(status) {
+            let data = {
+                id: this.currentProduct.id,
+                name: this.currentProduct.name,
+                description: this.currentProduct.description,
+                available: status
+            };
+
+            ProductDataService.update(this.currentProduct.id, data)
+                .then(response => {
+                    this.currentProduct.available = response.data.available;
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        updateProduct() {
+            ProductDataService.update(this.currentProduct.id, this.currentProduct)
+                .then(response => {
+                    console.log(response.data);
+                    this.message = "Produkt zmieniony poprawnie.";
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+
+        deleteProduct() {
+            ProductDataService.delete(this.currentProduct.id)
+                .then(response => {
+                    console.log(response.data);
+                    this.$router.push({ name: "products "});
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        }
+    },
+
+    mounted() {
+        this.message = '';
+        this.getProduct(this.$route.params.id);
+    }
+};
+</script>
