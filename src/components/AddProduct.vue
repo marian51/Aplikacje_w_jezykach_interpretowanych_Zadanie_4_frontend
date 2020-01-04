@@ -29,7 +29,7 @@
 
         <div v-else>
             <h4>Produkt dodany pomyślnie</h4>
-            <button class="btn btn-success" @click="newProduct">Dodaj</button>
+            <button class="btn btn-success" @click="newProduct">Okej!</button>
         </div>
     </div>
 </template>
@@ -74,6 +74,7 @@ export default {
         newProduct() {
             this.submitted = false;
             this.product = {};
+            this.$router.push('/products');
         }
     }
 };
