@@ -10,7 +10,7 @@ export default new Router({
             path: "/",
             alias: "/products",
             name: "products",
-            component: () => import("./components/ProductList")
+            component: () => import("./components/ProductsList")
         },
         {
             path: "/products/:id",
