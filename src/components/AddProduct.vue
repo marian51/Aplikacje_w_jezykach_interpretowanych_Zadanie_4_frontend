@@ -61,6 +61,7 @@ export default {
             ProductDataService.create(data)
                 .then(response => {
                     this.product.id = response.data.id;
+                    //eslint-disable no-console
                     console.log(response.data);
                 })
                 .catch(error => {
