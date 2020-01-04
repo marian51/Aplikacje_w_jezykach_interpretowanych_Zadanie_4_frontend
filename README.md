@@ -11,6 +11,7 @@ npm install axios --save
 npm install vue-router --save
 ```
 ## Konieczne jest uruchomienie dopiero po uruchomieniu serwera!
+> **Aplikacja powinna działać na porcie 8081 (`localhost:8081/`)**
 
 ### Uruchomienie
 ```
