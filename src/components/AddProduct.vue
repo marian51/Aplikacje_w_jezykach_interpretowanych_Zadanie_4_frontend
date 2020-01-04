@@ -33,3 +33,54 @@
         </div>
     </div>
 </template>
+
+<script>
+import ProductDataService from "../services/ProductDataService";
+
+export default {
+    name: "add-product",
+    data() {
+        return {
+            product: {
+                id: null,
+                name: "",
+                description: "",
+                available: false
+            },
+            submitted: false
+        };
+    },
+
+    methods: {
+        saveProduct() {
+            let data = {
+                name: this.product.name,
+                description: this.product.description
+            };
+
+            ProductDataService.create(data)
+                .then(response => {
+                    this.product.id = response.data.id;
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+
+            this.submitted = true;
+        },
+
+        newProduct() {
+            this.submitted = false;
+            this.product = {};
+        }
+    }
+};
+</script>
+
+<style>
+.submit-form {
+    max-width: 300px;
+    margin: auto;
+}
+</style>s
