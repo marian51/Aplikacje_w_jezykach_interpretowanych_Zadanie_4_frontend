@@ -44,7 +44,7 @@
                 </div>
 
                 <a class="badge badge-warning"
-                :href="'/products' + currentProduct.id"
+                :href="'/products/' + currentProduct.id"
                 >
                 Edytuj
                 </a>
