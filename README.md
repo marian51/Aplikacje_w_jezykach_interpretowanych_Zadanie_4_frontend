@@ -21,7 +21,8 @@ npm run serve
 ### Wymagania do tej części
 - [ ] Produkt
   - [x] podstawowe informacje o produkcie (nazwa, opis)
-  - [ ] dodatkowe informacje o produkcie (cena, waga, kategoria)
+  - [x] dodatkowe informacje o produkcie (cena, waga)
+  - [ ] przypisanie produktu do kategorii 
   - [x] dodawanie produktu
   - [x] modyfikowanie produktu
   - [x] usuwanie produktu
