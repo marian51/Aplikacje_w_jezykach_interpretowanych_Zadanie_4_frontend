@@ -19,10 +19,10 @@ npm run serve
 ```
 
 ### Wymagania do tej części
-- [ ] Produkt
+- [x] Produkt
   - [x] podstawowe informacje o produkcie (nazwa, opis)
   - [x] dodatkowe informacje o produkcie (cena, waga)
-  - [ ] przypisanie produktu do kategorii 
+  - [x] przypisanie produktu do kategorii 
   - [x] dodawanie produktu
   - [x] modyfikowanie produktu
   - [x] usuwanie produktu
@@ -31,7 +31,7 @@ npm run serve
   - [ ] wyświetlanie listy jako tabeli
   - [x] wyszukiwanie po nazwie
   - [ ] filtroanie listy
-- [ ] Kategorie `jeszcze nie ma w backendzie`
+- [x] Kategorie
 - [ ] Zamówienie `jeszcze nie ma w backendzie`
 - [ ] Koszyk `jeszcze nie ma w backendzie`
 - [ ] Walidacja danych w formularzach
