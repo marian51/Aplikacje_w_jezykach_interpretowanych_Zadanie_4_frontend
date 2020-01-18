@@ -40,6 +40,12 @@
                     <label><strong>Opis: </strong></label> {{ currentProduct.description }}
                 </div>
                 <div>
+                    <label><strong>Cena: </strong></label> {{ currentProduct.price | currency }}
+                </div>
+                <div>
+                    <label><strong>Waga: </strong></label> {{ currentProduct.weight | comma }} kg
+                </div>
+                <div>
                     <label><strong>Status: </strong></label> {{ currentProduct.available ? "Dostępny" : "Niedostępny" }}
                 </div>
 
@@ -121,6 +127,17 @@ export default {
 
     mounted() {
         this.retrieveProducts();
+    },
+
+    filters: {
+        currency(value) {
+            return new Intl.NumberFormat("pl-PL", {
+                style: "currency", currency: "PLN"
+            }).format(value);
+        },
+        comma(value) {
+            return new Intl.NumberFormat("pl-PL").format(value);
+        }
     }
 };
 </script>
