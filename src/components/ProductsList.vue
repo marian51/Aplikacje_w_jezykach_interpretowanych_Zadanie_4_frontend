@@ -46,7 +46,7 @@
                     <label><strong>Waga: </strong></label> {{ currentProduct.weight | comma }} kg
                 </div>
                 <div>
-                    <label><strong>Kategoria: </strong></label> {{ categoryName }}
+                    <label><strong>Kategoria: </strong></label> {{ currentCategory.name }}
                 </div>
                 <div>
                     <label><strong>Status: </strong></label> {{ currentProduct.available ? "Dostępny" : "Niedostępny" }}
@@ -81,7 +81,8 @@ export default {
             currentProduct: null,
             currentIndex: -1,
             name: "",
-            categoryName: ''
+            categoryName: '',
+            currentCategory: ''
         };
     },
 
@@ -90,7 +91,6 @@ export default {
             ProductDataService.getAll()
                 .then(response => {
                     this.products = response.data;
-                    console.log(response.data);
                 })
                 .catch(error => {
                     console.log(error);
@@ -101,7 +101,16 @@ export default {
             CategoryDataService.getAll()
                 .then(response => {
                     this.categories = response.data;
-                    console.log(response.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+
+        getCategory(id) {
+            CategoryDataService.get(id)
+                .then(response => {
+                    this.currentCategory = response.data;
                 })
                 .catch(err => {
                     console.log(err);
@@ -117,12 +126,16 @@ export default {
         setActiveProduct(product, index) {
             this.currentProduct = product;
             this.currentIndex = index;
-            for (let c in this.categories) {
+
+            /*for (let c in this.categories) {
                 if(this.categories[c].id==this.currentProduct.categoryId)
                 {
                     this.categoryName = this.categories[c].name
                 }
-            }
+            }*/
+
+            this.getCategory(this.currentProduct.categoryId);
+
         },
 
         removeAllProducts() {
