@@ -46,6 +46,9 @@
                     <label><strong>Waga: </strong></label> {{ currentProduct.weight | comma }} kg
                 </div>
                 <div>
+                    <label><strong>Kategoria: </strong></label> {{ categoryName }}
+                </div>
+                <div>
                     <label><strong>Status: </strong></label> {{ currentProduct.available ? "Dostępny" : "Niedostępny" }}
                 </div>
 
@@ -67,15 +70,18 @@
 <script>
 /* eslint-disable no-console */
 import ProductDataService from "../services/ProductDataService";
+import CategoryDataService from "../services/CategoryDataService";
 
 export default {
     name: "products-list",
     data() {
         return {
             products: [],
+            categories: [],
             currentProduct: null,
             currentIndex: -1,
-            name: ""
+            name: "",
+            categoryName: ''
         };
     },
 
@@ -91,6 +97,17 @@ export default {
                 });
         },
 
+        retrieveCategories() {
+            CategoryDataService.getAll()
+                .then(response => {
+                    this.categories = response.data;
+                    console.log(response.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        },
+
         refreshList() {
             this.retrieveProducts();
             this.currentProduct = null;
@@ -100,6 +117,12 @@ export default {
         setActiveProduct(product, index) {
             this.currentProduct = product;
             this.currentIndex = index;
+            for (let c in this.categories) {
+                if(this.categories[c].id==this.currentProduct.categoryId)
+                {
+                    this.categoryName = this.categories[c].name
+                }
+            }
         },
 
         removeAllProducts() {
@@ -127,6 +150,7 @@ export default {
 
     mounted() {
         this.retrieveProducts();
+        this.retrieveCategories();
     },
 
     filters: {
