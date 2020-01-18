@@ -46,7 +46,7 @@
                     name="price"
                     v-bind:class="{ 'is-invalid': ifSubmit && wrongPriceNumber }"
                 >
-                <div class="invalid-feedback">Wymagana jest liczba</div>
+                <div class="invalid-feedback">Wymagana jest dodatnia liczba</div>
             </div>
 
             <div class="form-group">
@@ -59,7 +59,7 @@
                     name="weight"
                     v-bind:class="{ 'is-invalid': ifSubmit && wrongWeightNumber }"
                 >
-                <div class="invalid-feedback">Wymagana jest liczba</div>
+                <div class="invalid-feedback">Wymagana jest dodatnia liczba</div>
             </div>
 
             <div class="form-group">
@@ -68,7 +68,10 @@
                     label="name" 
                     :options="categories"
                     v-model="selected"
-                    :reduce="name => name.id"></v-select>
+                    :reduce="name => name.id"
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongCategory }">
+                </v-select>
+                <div class="invalid-feedback">Wymagane jest wybranie kategorii</div>
             </div>
 
             <button @click="saveProduct" class="btn btn-success">Zapisz</button>
@@ -112,11 +115,11 @@ export default {
 
     computed: {
         wrongWeightNumber() {
-            return (this.isNumeric(this.product.weight)===false);
+            return (this.isNumeric(this.product.weight)===false || this.product.weight < 0.0);
         },
 
         wrongPriceNumber() {
-            return (this.isNumeric(this.product.price)===false);
+            return (this.isNumeric(this.product.price)===false || this.product.price < 0.0);
         },
 
         wrongName() {
@@ -126,6 +129,10 @@ export default {
 
         wrongDescription() {
             return (this.product.description==='')
+        },
+
+        wrongCategory() {
+            return (this.selected==='')
         },
 
         ifSubmit(){
