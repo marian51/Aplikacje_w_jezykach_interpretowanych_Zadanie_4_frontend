@@ -13,8 +13,8 @@
         </div>
 
         <div class="col-md-6">
-            <h4>Lista produktów</h4>
-            <ul class="list-group">
+            <h4>Lista produktów</h4>    <!-- TODO Pomyśleć nad generowaniem tabeli zamiast listy -->
+            <ul class="list-group"> <!-- TODO Można dodać wyświetlanie wagi, ceny itp oprócz tylko opisu -->
                 <li class="list-group-item"
                 :class="{ active: index == currentIndex }"
                 v-for="(product, index) in products"
