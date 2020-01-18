@@ -8,6 +8,10 @@
      getAll() {
          return http.get("/categories");
      }
+
+     get(id) {
+         return http.get(`/categories/${id}`);
+     }
  }
 
  export default new CategoryDataService();
