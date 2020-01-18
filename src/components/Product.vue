@@ -7,7 +7,10 @@
                 <input type="text" 
                     class="form-control" 
                     id="name" 
-                    v-model="currentProduct.name" />
+                    v-model="currentProduct.name"
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongName }"
+                />
+                <div class="invalid-feedback">Wymagana jest nazwa przedmiotu</div>
             </div>
 
             <div class="form-group">
@@ -15,7 +18,10 @@
                 <input type="text" 
                     class="form-control" 
                     id="description"
-                    v-model="currentProduct.description" />
+                    v-model="currentProduct.description" 
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongDescription }"
+                />
+                <div class="invalid-feedback">Wymagany jest opis przedmiotu</div>
             </div>
 
             <div class="form-group">
@@ -23,7 +29,10 @@
                 <input type="text" 
                     class="form-control" 
                     id="price"
-                    v-model="currentProduct.price" />
+                    v-model="currentProduct.price" 
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongPriceNumber }"
+                />
+                <div class="invalid-feedback">Wymagana jest dodatnia liczba</div>
             </div>
 
             <div class="form-group">
@@ -31,7 +40,10 @@
                 <input type="text" 
                     class="form-control" 
                     id="weight"
-                    v-model="currentProduct.weight" />
+                    v-model="currentProduct.weight"
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongWeightNumber }"
+                />
+                <div class="invalid-feedback">Wymagana jest dodatnia liczba</div>
             </div>
 
             <div class="form-group">
@@ -40,8 +52,10 @@
                     label="name"
                     :options="categories"
                     v-model="currentProduct.categoryId"
-                    :reduce="name => name.id">
+                    :reduce="name => name.id"
+                    v-bind:class="{ 'is-invalid': ifSubmit && wrongCategory }">
                 </v-select>
+                <div class="invalid-feedback">Wymagane jest wybranie kategorii</div>
             </div>
 
             <div class="form-group">
@@ -92,8 +106,42 @@ export default {
             currentProduct: null,
             message: "",
             categories: [],
-            selected: ''
+            selected: '',
+            thisSubmit: false,
+            errors: false,
         };
+    },
+
+    computed: {
+        wrongWeightNumber() {
+            return (this.isNumeric(this.currentProduct.weight)===false || this.currentProduct.weight < 0.0);
+        },
+
+        wrongPriceNumber() {
+            return (this.isNumeric(this.currentProduct.price)===false || this.currentProduct.price < 0.0);
+        },
+
+        wrongName() {
+            console.log("Selected = "+this.selected);
+            return (this.currentProduct.name==='')
+        },
+
+        wrongDescription() {
+            return (this.currentProduct.description==='')
+        },
+
+        wrongCategory() {
+            return (this.selected==='')
+        },
+
+        ifSubmit(){
+            if(this.thisSubmit===false)
+                return false;
+            else if (this.thisSubmit===true)
+                return true;
+            else
+                return false
+        }
     },
 
     methods: {
@@ -109,6 +157,13 @@ export default {
         },
 
         updateAvailable(status) {
+            this.validateForm();
+
+            if(this.errors) {
+                console.log("Są errory");
+                return false;
+            }
+
             let data = {
                 id: this.currentProduct.id,
                 name: this.currentProduct.name,
@@ -125,21 +180,32 @@ export default {
                 .then(response => {
                     this.currentProduct.available = response.data.available;
                     console.log(response.data);
-                    window.location.reload(false);
+                    //window.location.reload(false);
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log(error || "Błąd formularza");
+                    this.message = "Błąd formularza. Przedmiot nie został edytowany."
                 });
         },
 
         updateProduct() {
+            this.validateForm();
+
+            if(this.errors) {
+                console.log("Są errory");
+                return false;
+            }
+
+            this.message = "Błąd formularza. Przedmiot nie został edytowany."
+
             ProductDataService.update(this.currentProduct.id, this.currentProduct)
                 .then(response => {
                     console.log(response.data);
                     this.message = "Produkt zmieniony poprawnie.";
                 })
                 .catch(error => {
-                    console.log(error);
+                    console.log(error || "Błąd formularza");
+                    this.message = "Błąd formularza. Przedmiot nie został edytowany."
                 });
         },
 
@@ -163,7 +229,32 @@ export default {
                 .catch(err => {
                     console.log(err);
                 })
-        }
+        },
+
+        validateForm() {
+            this.thisSubmit = true;
+            console.log("thisSubmit = true");
+            if(this.wrongName) {
+                this.errors = true;
+            }
+            else if(this.wrongDescription) {
+                this.errors = true;
+            }
+            else if(this.wrongPriceNumber) {
+                this.errors = true;
+            }
+            else if(this.wrongWeightNumber) {
+                this.errors = true;
+            }
+            else {
+                this.errors = false;
+            }
+        },
+
+        isNumeric(d) {
+            return !isNaN(parseFloat(d)) && isFinite(d);
+        },
+
     },
 
     mounted() {
