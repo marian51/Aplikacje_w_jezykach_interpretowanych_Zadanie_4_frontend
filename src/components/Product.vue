@@ -19,6 +19,32 @@
             </div>
 
             <div class="form-group">
+                <label for="description">Cena</label>
+                <input type="text" 
+                    class="form-control" 
+                    id="price"
+                    v-model="currentProduct.price" />
+            </div>
+
+            <div class="form-group">
+                <label for="description">Waga</label>
+                <input type="text" 
+                    class="form-control" 
+                    id="weight"
+                    v-model="currentProduct.weight" />
+            </div>
+
+            <div class="form-group">
+                <label for="category">Kategoria</label>
+                <v-select
+                    label="name"
+                    :options="categories"
+                    v-model="currentProduct.categoryId"
+                    :reduce="name => name.id">
+                </v-select>
+            </div>
+
+            <div class="form-group">
                 <label><strong>Status: </strong></label>
                 {{ currentProduct.available ? "Dostępny" : "Niedostępny" }}
             </div>
@@ -56,13 +82,17 @@
 <script>
 /* eslint-disable no-console */
 import ProductDataService from "../services/ProductDataService";
+import CategoryDataService from "../services/CategoryDataService";
+
 
 export default {
     name: "product",
     data() {
         return {
             currentProduct: null,
-            message: ""
+            message: "",
+            categories: [],
+            selected: ''
         };
     },
 
@@ -83,8 +113,13 @@ export default {
                 id: this.currentProduct.id,
                 name: this.currentProduct.name,
                 description: this.currentProduct.description,
+                price: this.currentProduct.price,
+                weight: this.currentProduct.weight,
+                categoryId: this.selected,
                 available: status
             };
+
+            console.log("Selected: "+this.selected)
 
             ProductDataService.update(this.currentProduct.id, data)
                 .then(response => {
@@ -117,12 +152,24 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+        },
+
+        retrieveCategories() {
+            CategoryDataService.getAll()
+                .then(response => {
+                    this.categories = response.data;
+                    console.log(response.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
     },
 
     mounted() {
         this.message = '';
         this.getProduct(this.$route.params.id);
+        this.retrieveCategories();
     }
 };
 </script>
