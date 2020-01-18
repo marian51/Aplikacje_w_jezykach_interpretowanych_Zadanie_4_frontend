@@ -62,6 +62,15 @@
                 <div class="invalid-feedback">Wymagana jest liczba</div>
             </div>
 
+            <div class="form-group">
+                <label for="category">Kategoria</label>
+                <v-select 
+                    label="name" 
+                    :options="categories"
+                    v-model="selected"
+                    :reduce="name => name.id"></v-select>
+            </div>
+
             <button @click="saveProduct" class="btn btn-success">Zapisz</button>
         
         </div>
@@ -77,6 +86,7 @@
 <script>
 /* eslint-disable no-console */
 import ProductDataService from "../services/ProductDataService";
+import CategoryDataService from "../services/CategoryDataService";
 
 export default {
     name: "add-product",
@@ -88,12 +98,15 @@ export default {
                 description: "",
                 price: '',
                 weight: '',
+                categoryId: '',
                 available: false
             },
             submitted: false,
             errors: false,
             number: '',
-            thisSubmit: false
+            thisSubmit: false,
+            categories: [],
+            selected: ''
         };
     },
 
@@ -107,6 +120,7 @@ export default {
         },
 
         wrongName() {
+            console.log("Selected = "+this.selected);
             return (this.product.name==='')
         },
 
@@ -138,7 +152,8 @@ export default {
                 name: this.product.name,
                 description: this.product.description,
                 price: this.product.price,
-                weight: this.product.weight
+                weight: this.product.weight,
+                categoryId: this.selected
             };
 
             //this.validation(data);
@@ -213,7 +228,23 @@ export default {
 
         isNumeric(d) {
             return !isNaN(parseFloat(d)) && isFinite(d);
+        },
+
+        retrieveCategories() {
+            CategoryDataService.getAll()
+                .then(response => {
+                    this.categories = response.data;
+                    console.log(response.data)
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         }
+    }, 
+    
+    mounted() {
+        this.retrieveCategories();
+        console.log("Kategorie: "+this.categories);
     }
 };
 </script>
