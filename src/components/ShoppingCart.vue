@@ -47,6 +47,9 @@
                 </tr>
             </tfoot>
         </table>
+        <!--TODO dodać przycisk do powrotu do listy produktów
+            TODO dodać przycisk do składania zamówienia
+         -->
     </div>
 </template>
 
