@@ -22,6 +22,10 @@
                 @click="setActiveProduct(product, index)"
                 >
                 {{ product.name }}
+                <button class="btn btn-success btn-sm float-right"
+                        v-on:click="addToCart(product)">
+                        Dodaj do koszyka
+                </button>
                 </li>
             </ul>
 
@@ -57,6 +61,7 @@
                 >
                 Edytuj
                 </a>
+                
             </div>
 
             <div v-else>
@@ -71,6 +76,7 @@
 /* eslint-disable no-console */
 import ProductDataService from "../services/ProductDataService";
 import CategoryDataService from "../services/CategoryDataService";
+//import CartDataService from "../services/CartDataService";
 
 export default {
     name: "products-list",
@@ -78,6 +84,7 @@ export default {
         return {
             products: [],
             categories: [],
+            cart: [],
             currentProduct: null,
             currentIndex: -1,
             name: "",
@@ -158,12 +165,42 @@ export default {
                 .catch(error => {
                     console.log(error)
                 });
+        },
+
+        addToCart(p) {
+            console.log(p)
+            let t = this.cart.find(t => t.product.id == p.id)
+            if(t != null) {
+                console.log("Znalazlem")
+                for (let i in this.cart) {
+                    if(this.cart[i].product.id == p.id) {
+                        this.cart[i].quantity++;
+                    }
+                }
+            }
+            else {
+                console.log("Nie znalaznem")
+                this.cart.push({
+                product: p,
+                quantity: 1
+            });
+            }
+
+            
+            localStorage.setItem("cart", JSON.stringify(this.cart));
+            this.$router.push("/cart")
         }
     },
 
     mounted() {
         this.retrieveProducts();
         this.retrieveCategories();
+        if(localStorage.getItem("cart")===null)
+        {
+            localStorage.setItem("cart", JSON.stringify(this.cart));
+        }else {
+            this.cart = JSON.parse(localStorage.getItem("cart"))
+        }
     },
 
     filters: {
