@@ -21,6 +21,11 @@ export default new Router({
             path: "/add",
             name: "add",
             component: () => import("./components/AddProduct")
+        },
+        {
+            path: "/cart",
+            name: "cart",
+            component: () => import("./components/ShoppingCart")
         }
     ]
 });
