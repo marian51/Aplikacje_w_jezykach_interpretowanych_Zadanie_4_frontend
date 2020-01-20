@@ -261,4 +261,4 @@ export default {
     max-width: 300px;
     margin: auto;
 }
-</style>s
+</style>
