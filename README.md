@@ -32,9 +32,12 @@ npm run serve
   - [x] wyszukiwanie po nazwie
   - [ ] filtroanie listy
 - [x] Kategorie
-- [ ] Zamówienie `jeszcze nie ma w backendzie`
-- [ ] Koszyk `jeszcze nie ma w backendzie`
-- [ ] Walidacja danych w formularzach
+- [ ] Zamówienie
+  - [x] składanie zamówienia
+  - [ ] wyświetlanie zamówień
+  - [ ] wyświetlanie według stanu zamówienia
+- [x] Koszyk
+- [x] Walidacja danych w formularzach
 - [x] Zabezpieczenie dostępu
 - [x] Responsywny framework
 
