@@ -13,6 +13,11 @@
             <a href="/cart" class="nav-link">Koszyk</a>
           </li>
         </div>
+        <div class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a href="/allOrders" class="nav-link">Zamówienia</a>
+          </li>
+        </div>
     </nav>
 
     <div class="container mt-3">
@@ -26,4 +31,8 @@ export default {
   name: 'app'
 }
 </script>
+
+<style>
+nav ul li:last-child {float: right; }
+</style>
 
