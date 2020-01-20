@@ -31,7 +31,7 @@
         </div>
 
         <div v-if="submitted==true">
-            <h5>Zamówienie zostało przesłane</h5>
+            <h5>Zamówienie zostało przesłane</h5> <!-- TODO wyrównać do środka -->
         </div>
     </div>
 </template>
@@ -53,7 +53,8 @@ export default {
             phone: null,
             totalPrice: 0,
             cart: JSON.parse(localStorage.getItem("cart")),
-            submitted: false
+            submitted: false,
+            orderId: null
         }
     },
 
@@ -72,7 +73,7 @@ export default {
 
     methods: {
         submit() {
-
+            // TODO wypadało by dodać walideację, kiedy pola są puste
             let data = {
                 userName: this.name,
                 userEmail: this.email,
@@ -84,14 +85,35 @@ export default {
             OrderDataService.create(data)
                 .then(response => {
                     console.log(response.data);
+                    this.orderId = response.data.id;
+                    console.log(this.orderId);
+
+                    //tworzenie wpisów w bazie zamówienie-produkt
+                    for(let p in this.cart) {
+                        let pr = {
+                            orderId: this.orderId,
+                            productId: this.cart[p].product.id,
+                            productQuantity: this.cart[p].quantity
+                        }
+                        console.log(pr)
+
+                        OrderDataService.createEntity(pr)
+                            .then(response => {
+                                console.log(response.data);
+                            })
+                            .catch(err => {
+                                console.log(err);
+                            })
+                     }    
                 })
                 .catch(err => {
                     console.log(err);
                 });
 
             this.submitted = true;
-
-        },
+            // TODO dodać czyszczenie koszyka po złożeniu zamówienia
+            
+        },     
 
         calculate() {
             let t = 0
