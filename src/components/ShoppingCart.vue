@@ -49,9 +49,6 @@
                         </tr>
                     </tfoot>
                 </table>
-                <!--
-                    TODO dodać przycisk do składania zamówienia
-                -->
             </div>
         </div>
         <div class="row">
