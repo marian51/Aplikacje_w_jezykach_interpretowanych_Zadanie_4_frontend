@@ -160,7 +160,8 @@ export default {
                 description: this.product.description,
                 price: this.product.price,
                 weight: this.product.weight,
-                categoryId: this.selected
+                categoryId: this.selected,
+                available: true
             };
 
             //this.validation(data);
