@@ -55,7 +55,8 @@
             <div class="col text-center ">
                 <div class="btn-group">
                     <a class="btn btn-warning" href="/products">Kontynuuj zakupy</a>
-                    <a class="btn btn-warning" href="/order">Złóż zamówienie</a> <!-- TODO dodać komponent podziękowania za zamówienie -->
+                    <a v-if="cart==''" class="btn btn-warning disabled" href="/order">Złóż zamówienie</a> <!-- FIXME prowizoryczne -->
+                    <a v-if="cart!=''" class="btn btn-warning" href="/order">Złóż zamówienie</a> 
                 </div>
             </div>
         </div>
