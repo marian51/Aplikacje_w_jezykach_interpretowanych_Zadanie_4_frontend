@@ -10,11 +10,21 @@
                     </button>
                 </div>
             </div>
+
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Wyszukaj po kategorii" v-model="thatCategory" />
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button"
+                    @click="searchCategory">
+                    Szukaj
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="col-md-6">
-            <h4>Lista produktów</h4>    <!-- TODO Pomyśleć nad generowaniem tabeli zamiast listy -->
-            <ul class="list-group"> <!-- TODO Można dodać wyświetlanie wagi, ceny itp oprócz tylko opisu -->
+            <h4>Lista produktów</h4> 
+            <ul class="list-group">
                 <li class="list-group-item"
                 :class="{ active: index == currentIndex }"
                 v-for="(product, index) in products"
@@ -28,6 +38,34 @@
                 </button>
                 </li>
             </ul>
+
+
+            <!-- tutaj jest widok tabeli, ale nie podoba mi on się
+            <table class="table table-bordered table-stripped p-2">
+                <thead>
+                    <tr>
+                        <th>Nazwa</th>
+                        <th>Cena</th>
+                        <th>Waga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr 
+                    :class="{ active: index == currentIndex }"
+                    v-for="(product, index) in products"
+                    :key="index"
+                    @click="setActiveProduct(product, index)"
+                    >
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }} </td>
+                        <td>{{ product.weight }} </td>
+                        <button class="btn btn-success btn-sm float-right"
+                            v-on:click="addToCart(product)">
+                            Dodaj do koszyka
+                        </button>
+                    </tr>
+                </tbody>
+            </table>-->
 
             <button class="m-3 btn btn-sm btn-danger" @click="removeAllProducts">
                 Usuń wszystkie
@@ -88,6 +126,7 @@ export default {
             currentProduct: null,
             currentIndex: -1,
             name: "",
+            thatCategory: "",
             categoryName: '',
             currentCategory: ''
         };
@@ -158,6 +197,36 @@ export default {
 
         searchName() {
             ProductDataService.findByName(this.name)
+                .then(response => {
+                    this.products = response.data;
+                    console.log(response.data);
+                })
+                .catch(error => {
+                    console.log(error)
+                });
+        },
+
+        searchCategory() {
+
+            let h = ''
+
+            if(this.thatCategory=='')
+            {
+                this.retrieveProducts()
+                return;
+            }
+
+            for (let c in this.categories) {
+                //let cname = this.categories[c].name.toLowerCase().includes(this.thatCategory.toLowerCase());
+                //console.log(cname)
+                if(this.categories[c].name.toLowerCase().includes(this.thatCategory.toLowerCase())) {
+                    h = this.categories[c].id
+                }
+            }
+
+
+
+            ProductDataService.findByCategoryId(h)
                 .then(response => {
                     this.products = response.data;
                     console.log(response.data);
