@@ -9,6 +9,7 @@ Vue.config.productionTip = false
 Vue.component('v-select', vSelect)
 
 Vue.use(Vuelidate);
+Vue.use(require('vue-moment'))
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import 'vue-select/dist/vue-select.css';
