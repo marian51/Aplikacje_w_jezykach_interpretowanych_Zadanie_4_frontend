@@ -12,6 +12,10 @@ class OrderDataService {
     createEntity(data) {
         return http.post("/orderproducts", data);
     }
+
+    update(id, data) {
+        return http.put(`/orders/${id}`, data);
+    }
 }
 
 export default new OrderDataService();
