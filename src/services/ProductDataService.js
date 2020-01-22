@@ -32,6 +32,14 @@
      findByName(name) {
          return http.get(`/products?name=${name}`);
      }
+
+     findByCategoryId(id) {
+        return http.get(`/products/products/${id}`);
+    }
+
+    findProducts(id) { // FIXME powinno to być w oddzielnym serwisie
+        return http.get(`/orderproducts?orderId=${id}`);
+    }
  }
 
  export default new ProductDataService();
