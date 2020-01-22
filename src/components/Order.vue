@@ -30,8 +30,8 @@
             <button class="btn btn-primary m-1" v-on:click="submit">Złóż zamówienie</button>
         </div>
 
-        <div v-if="submitted==true">
-            <h5>Zamówienie zostało przesłane</h5> <!-- TODO wyrównać do środka -->
+        <div v-if="submitted==true" class="text-center">
+            <h5>{{ message }}</h5> <!-- TODO wyrównać do środka -->
         </div>
     </div>
 </template>
@@ -54,7 +54,8 @@ export default {
             totalPrice: 0,
             cart: JSON.parse(localStorage.getItem("cart")),
             submitted: false,
-            orderId: null
+            orderId: null,
+            message: ''
         }
     },
 
@@ -73,12 +74,22 @@ export default {
 
     methods: {
         submit() {
-            // TODO wypadało by dodać walideację, kiedy pola są puste
+
+            // FIXME prostacka walidacja, ale działa
+            if(this.name=='' || this.email=='' || this.phone=='' || this.name==null || this.email==null || this.phone==null ) {
+                this.message = "Zamówienie nie zostało przesłane. Sprawdź formularz."
+                console.log(this.message)
+                this.submitted=true
+                return;
+            }
+
+            
             let data = {
                 userName: this.name,
                 userEmail: this.email,
                 userPhone: this.phone,
                 totalPrice: this.totalPrice,
+                acceptDate: null,
                 stateId: 1
             };
 
@@ -87,6 +98,8 @@ export default {
                     console.log(response.data);
                     this.orderId = response.data.id;
                     console.log(this.orderId);
+                    console.log("koszyk:")
+                    console.log(this.cart)
 
                     //tworzenie wpisów w bazie zamówienie-produkt
                     for(let p in this.cart) {
@@ -95,6 +108,7 @@ export default {
                             productId: this.cart[p].product.id,
                             productQuantity: this.cart[p].quantity
                         }
+                        console.log("tworzenie wpisu")
                         console.log(pr)
 
                         OrderDataService.createEntity(pr)
@@ -104,14 +118,19 @@ export default {
                             .catch(err => {
                                 console.log(err);
                             })
-                     }    
+                     }
+                     
+                    this.cart = []
+                    localStorage.setItem("cart", JSON.stringify(this.cart));
                 })
                 .catch(err => {
                     console.log(err);
                 });
 
+            console.log(this.name)
             this.submitted = true;
-            // TODO dodać czyszczenie koszyka po złożeniu zamówienia
+            this.message = "Zamówienie zostało przesłane"
+            
             
         },     
 
